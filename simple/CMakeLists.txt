@@ -10,3 +10,10 @@ LINK_DIRECTORIES(${GTEST_HOME}/build/lib) # 如果不加这项配置,则TARGET_L
 
 ADD_EXECUTABLE(simple simple_gtest.cpp)
 TARGET_LINK_LIBRARIES(simple gtest gtest_main pthread)
+
+set(ACL_HOME /f_/import/cpp/acl)
+INCLUDE_DIRECTORIES(${ACL_HOME}/lib_acl_cpp/include -${ACL_HOME}/lib_acl/include -${ACL_HOME}/lib_protocol/include)
+LINK_DIRECTORIES(${ACL_HOME})
+
+ADD_EXECUTABLE(redis redis_gtest.cpp)
+TARGET_LINK_LIBRARIES(redis gtest gtest_main pthread acl_all)
