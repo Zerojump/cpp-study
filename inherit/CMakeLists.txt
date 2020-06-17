@@ -5,3 +5,5 @@ message("-- ${PROJECT_NAME} build in " ${CMAKE_CURRENT_BINARY_DIR})
 add_library(inheritPrac STATIC scheduler_save.cpp scheduler_save.h scheduler_save_kid.cpp scheduler_save_kid.h key_builder.cpp key_builder.h)
 INSTALL(TARGETS inheritPrac ARCHIVE DESTINATION lib)
 INSTALL(FILES key_builder.h scheduler_save.h scheduler_save_kid.h DESTINATION include/inheritPrac)
+
+add_executable(main main.cpp)
