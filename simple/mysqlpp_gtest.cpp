@@ -15,10 +15,7 @@ using namespace std;
 TEST(MySQLTest, SimpleQuery) {
     const char *db = 0, *server = 0, *user = 0, *password = "";
     db = "test";
-    server = ""
-             ""
-             ""
-             "";
+    server = "172.17.0.1";
     user = "root";
     password = "123456";
 
@@ -75,6 +72,51 @@ TEST(MySQLTest, STLQuery) {
             count += id;
         }
         printf("count:%d\n", count);
+    } else {
+        cout << "connect db fail. " << endl;
+    }
+}
+
+TEST(MySQLTest, Update) {
+    const char *db = 0, *server = 0, *user = 0, *password = "";
+    db = "test";
+    server = "172.17.0.1";
+    user = "root";
+    password = "123456";
+
+    mysqlpp::Connection conn(false);
+    if (conn.connect(db, server, user, password)) {
+        cout << "connect db succeed. " << endl;
+        mysqlpp::Query query = conn.query("update city set cname = %2q where id = %1 and cname = %0q;"
+                                          "insert into city(cname) values ('ck);");
+        query.parse();
+        mysqlpp::SimpleResult res = query.execute("sz", "1", "sad");
+
+        // mysqlpp::Query query = conn.query("SELECT * FROM city");
+        // mysqlpp::StoreQueryResult res = query.store();
+        printf("rows affected:%lu\n", res.rows());
+    } else {
+        cout << "connect db fail. " << endl;
+    }
+}
+
+TEST(MySQLTest, Insert) {
+    const char *db = 0, *server = 0, *user = 0, *password = "";
+    db = "test";
+    server = "172.17.0.1";
+    user = "root";
+    password = "123456";
+
+    mysqlpp::Connection conn(false);
+    if (conn.connect(db, server, user, password)) {
+        cout << "connect db succeed. " << endl;
+        mysqlpp::Query query = conn.query("insert into city(cname) values ('ck')");
+        // query.parse();
+        mysqlpp::SimpleResult res = query.execute();
+
+        // mysqlpp::Query query = conn.query("SELECT * FROM city");
+        // mysqlpp::StoreQueryResult res = query.store();
+        printf("rows affected:%lu\n", res.rows());
     } else {
         cout << "connect db fail. " << endl;
     }
