@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <mysql.h>
+#include <unistd.h>
 
 using namespace std;
 
@@ -58,20 +59,38 @@ TEST(MySQLTest, STLQuery) {
     user = "root";
     password = "123456";
 
-    mysqlpp::Connection conn(false);
+    mysqlpp::Connection conn(true);
     if (conn.connect(db, server, user, password)) {
-        cout << "connect db succeed. " << endl;
-        mysqlpp::Query query = conn.query("SELECT * FROM city");
-        vector<mysqlpp::Row> rows;
-        query.storein(rows);
-        int count(0);
-        for (auto &citie : rows) {
-            int id = (int) citie.at(0);
-            string cname = (string) citie.at(1);
-            printf("%d,%s\n", id, cname.c_str());
-            count += id;
+
+        try {
+            // conn.disconnect();
+            printf("sleep %d\n", time(NULL));
+            sleep(5);
+            printf("%d\n", time(NULL));
+
+            cout << "connect db succeed. " << endl;
+            mysqlpp::Query query = conn.query("SELECT a FROM city1");
+            vector<mysqlpp::Row> rows;
+            query.storein(rows);
+            int count(0);
+            for (auto &citie : rows) {
+                int id = (int) citie.at(0);
+                string cname = (string) citie.at(1);
+                printf("%d,%s\n", id, cname.c_str());
+                count += id;
+            }
+            printf("count:%d\n", count);
+        } catch (mysqlpp::BadQuery &e) {
+            printf("catch mysqlpp::BadQuery(%d) %s %s\n", e.errnum(), e.what(), typeid(e).name());
+
+        } catch (mysqlpp::Exception &e) {
+            printf("catch mysqlpp::Exception(%s) %s\n", e.what(), typeid(e).name());
+        } catch (std::exception &e) {
+            printf("catch exception\n");
+            cout << e.what() << endl;
         }
-        printf("count:%d\n", count);
+
+
     } else {
         cout << "connect db fail. " << endl;
     }

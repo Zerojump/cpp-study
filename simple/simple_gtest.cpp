@@ -4,6 +4,9 @@
 
 #include <gtest/gtest.h>
 #include <iostream>
+#include <bitset>
+
+using namespace std;
 
 // 单元测试
 TEST(FunTest, HandlesZeroInput) {
@@ -26,8 +29,13 @@ TEST(FunTest, HandlesZeroInput) {
     printf("hello gtest");
 }
 
-int main(int argc, char* argv[])
-{
+TEST(FunTest, Hex2Bin) {
+    string binary = "08FDD3C9B2AC2E";
+    bitset<8> bit(stoi(binary, nullptr, 16));
+    cout << bit << endl;
+}
+
+int main(int argc, char *argv[]) {
     ::testing::InitGoogleTest(&argc, argv);    // 初始化gtest
     return RUN_ALL_TESTS();                    // 运行所有测试用例
 }

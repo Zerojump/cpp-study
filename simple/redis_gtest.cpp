@@ -23,7 +23,7 @@ TEST(RedisTest, Cmd_STR) {
     acl::redis_string string_cmd(&conn);  // 使用初始化一个string
 
     const char *key = "name";
-    if (string_cmd.set(key, "Shayne") == false)  // 设置一个string 类型的key value
+    if (!string_cmd.set(key, "Shayne"))  // 设置一个string 类型的key value
     {
         const acl::redis_result *res = string_cmd.get_result();
         cout << "name " << res << endl;
